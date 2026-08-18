@@ -44,6 +44,14 @@ body {
     position: relative;
 }
 
+.brand-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 34px;
+    letter-spacing: 0.01em;
+    margin-bottom: 4px;
+}
+
 .brand-eyebrow {
     font-size: 11px;
     letter-spacing: 0.22em;
@@ -52,17 +60,9 @@ body {
     margin-bottom: 8px;
 }
 
-.brand-name {
-    font-family: 'Fraunces', serif;
-    font-weight: 700;
-    font-size: 34px;
-    letter-spacing: 0.01em;
-}
-
 .brand-sub {
     font-size: 12px;
     color: #C9BEA9;
-    margin-top: 6px;
     letter-spacing: 0.03em;
 }
 
@@ -395,21 +395,6 @@ body {
     background: #453A2F;
 }
 
-.thanks-note {
-    font-size: 13px;
-    color: #6B5D4F;
-    text-align: center;
-    margin-top: 16px;
-}
-
-.footer-mark {
-    text-align: center;
-    padding: 16px 0 4px;
-    font-size: 10.5px;
-    color: #8A7A65;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
 
 .toast {
     position: fixed;

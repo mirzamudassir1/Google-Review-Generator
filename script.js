@@ -3,8 +3,6 @@ const PLACE_ID = "ChIJ_wvuvBCayzsRfo-Z2VY0UMQ";
 const GOOGLE_REVIEW_URL = "https://search.google.com/local/writereview?placeid=" + PLACE_ID;
 
 // ===== Chip tags + phrase variants =====
-// Each tag has several worded variants — a random one is picked each time,
-// so two customers tapping the same chips still get differently-phrased text.
 const chipTags = [
     { tag: "quality", label: "Quality fabric" },
     { tag: "variety", label: "Wide variety" },
@@ -16,24 +14,113 @@ const chipTags = [
 ];
 
 const phrases = {
-    quality: ["the fabric quality is genuinely excellent", "the material quality really stood out", "everything is made from solid, good quality fabric"],
-    variety: ["they have a wide variety to choose from", "the range of options on display is great", "so many styles to pick from"],
-    pricing: ["the pricing is fair for the quality", "prices are quite reasonable", "good value for what you're paying"],
-    staff: ["the staff were really helpful throughout", "the team was friendly and patient with all my questions", "staff went out of their way to help me pick"],
-    fitting: ["they gave great advice on fitting", "the fitting suggestions were spot on", "staff helped me find exactly the right size"],
-    ambience: ["the store is well organised and easy to browse", "everything was neatly arranged", "clean, well laid out store"],
-    return: ["I'll definitely be coming back", "will be shopping here again for sure", "already planning my next visit"]
+    quality: [
+        "the fabric quality is genuinely excellent",
+        "the material quality really stood out to me",
+        "every garment feels premium and well-crafted",
+        "the cloth quality is top-notch",
+        "you can really feel the rich quality of the fabrics",
+        "superb fabric and durable tailoring",
+        "excellent stitching and high-grade material",
+        "high quality clothes that look and feel great",
+        "impressive fabric finish and luxury feel",
+        "the clothing quality is absolutely worth it"
+    ],
+    variety: [
+        "they have an incredible variety to choose from",
+        "a massive selection of options on display",
+        "so many stylish options to pick from",
+        "great collection for every occasion and preference",
+        "an extensive range of clothes in all sizes",
+        "lots of fresh designs and trendy collections available",
+        "impressive variety across every section",
+        "huge range of choices under one roof"
+    ],
+    pricing: [
+        "the pricing is surprisingly fair for the quality",
+        "extremely reasonable prices for such premium items",
+        "offers complete value for money",
+        "very budget-friendly considering the high quality",
+        "pricing is honest and competitive",
+        "great prices without compromising on material quality",
+        "affordable rates for great fashion"
+    ],
+    staff: [
+        "the staff members were extremely helpful and polite",
+        "courteous and attentive team throughout my visit",
+        "staff guided me patiently with all my choices",
+        "wonderful customer service from the store team",
+        "the sales staff was warm, welcoming and attentive",
+        "store staff made shopping effortless and pleasant",
+        "super friendly staff who truly listen to what you need"
+    ],
+    fitting: [
+        "they gave fantastic advice on fitting and sizing",
+        "got excellent suggestions regarding fit",
+        "the clothes fit perfectly right off the rack",
+        "great guidance on finding the ideal size",
+        "they really understand proper fitting and styling",
+        "tailored feel with perfect fitting recommendations"
+    ],
+    ambience: [
+        "the store is clean, neat, and beautifully organized",
+        "well-arranged store where it's easy to browse",
+        "spacious and well-maintained shopping environment",
+        "neatly displayed items making shopping a breeze",
+        "loved how clean and well laid out everything is"
+    ],
+    return: [
+        "I'll definitely be coming back for more",
+        "already planning my next shopping visit here",
+        "this has become my go-to clothing store in Secunderabad",
+        "will certainly be shopping here again for sure",
+        "looking forward to visiting Dressing Sense again soon"
+    ]
 };
 
 const openers = [
     "Visited Dressing Sense in Swapnalok Complex ",
     "Shopped at Dressing Sense, Swapnalok Complex ",
     "Went to Dressing Sense at Swapnalok Complex and",
-    "Stopped by Dressing Sense in Swapnalok Complex "
+    "Stopped by Dressing Sense in Swapnalok Complex ",
+    "Had a wonderful experience at Dressing Sense, Swapnalok Complex.",
+    "Just visited Dressing Sense in Secunderabad!",
+    "Shopping at Dressing Sense in Swapnalok Complex was a pleasure.",
+    "Checked out Dressing Sense today at Swapnalok Complex ",
+    "Always enjoy visiting Dressing Sense in Swapnalok Complex."
 ];
-const closers = ["Highly recommend.", "Would definitely recommend it.", "Worth a visit.", "Really happy with the experience."];
 
-function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+const closers = [
+    "Highly recommend!",
+    "Would definitely recommend visiting.",
+    "Worth a visit for sure.",
+    "Really happy with the experience.",
+    "Definite 5-star experience!",
+    "A must-visit store in Secunderabad.",
+    "Overall, a fantastic shopping experience.",
+    "10/10 recommended!"
+];
+
+const transitionWords = [
+    "Also,",
+    "Plus,",
+    "In addition,",
+    "Moreover,",
+    "Furthermore,"
+];
+
+function pick(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function shuffleArray(arr) {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+}
 
 let selectedTags = [];
 let userEditedReview = false;
@@ -66,17 +153,56 @@ function handleRating(n) {
     }
 }
 
-// ===== Screen 2: chip-based review builder =====
+// ===== Screen 2: Advanced Dynamic Unique Review Builder =====
 function buildSentence(tags) {
     if (tags.length === 0) return "";
-    const parts = tags.map(t => pick(phrases[t]));
-    const joined = parts.length === 1
-        ? parts[0]
-        : parts.length === 2
-            ? parts[0] + " and " + parts[1]
-            : parts.slice(0, -1).join(", ") + ", and " + parts[parts.length - 1];
-    const sentence = pick(openers) + " " + joined + ". " + pick(closers);
-    return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+
+    // Randomize tag order for unique structure every time
+    const shuffledTags = shuffleArray(tags);
+    const selectedPhrases = shuffledTags.map(t => pick(phrases[t]));
+    const opener = pick(openers);
+    const closer = pick(closers);
+
+    const structureType = Math.floor(Math.random() * 4);
+    let result = "";
+
+    if (selectedPhrases.length === 1) {
+        if (structureType % 2 === 0) {
+            result = `${opener} ${selectedPhrases[0]}. ${closer}`;
+        } else {
+            result = `${selectedPhrases[0].charAt(0).toUpperCase() + selectedPhrases[0].slice(1)} at Dressing Sense, Swapnalok Complex! ${closer}`;
+        }
+    } else if (selectedPhrases.length === 2) {
+        if (structureType === 0) {
+            result = `${opener} ${selectedPhrases[0]} and ${selectedPhrases[1]}. ${closer}`;
+        } else if (structureType === 1) {
+            result = `${opener} ${selectedPhrases[0]}. ${selectedPhrases[1].charAt(0).toUpperCase() + selectedPhrases[1].slice(1)}. ${closer}`;
+        } else if (structureType === 2) {
+            const trans = pick(transitionWords);
+            result = `${selectedPhrases[0].charAt(0).toUpperCase() + selectedPhrases[0].slice(1)} at Dressing Sense! ${trans} ${selectedPhrases[1]}. ${closer}`;
+        } else {
+            result = `${opener} ${selectedPhrases[0]}, plus ${selectedPhrases[1]}. ${closer}`;
+        }
+    } else {
+        const head = selectedPhrases.slice(0, -1).join(", ");
+        const tail = selectedPhrases[selectedPhrases.length - 1];
+
+        if (structureType === 0) {
+            result = `${opener} ${head}, and ${tail}. ${closer}`;
+        } else if (structureType === 1) {
+            const trans = pick(transitionWords);
+            result = `${opener} ${head}. ${trans} ${tail}. ${closer}`;
+        } else if (structureType === 2) {
+            const remaining = selectedPhrases.slice(1);
+            result = `${selectedPhrases[0].charAt(0).toUpperCase() + selectedPhrases[0].slice(1)} at Dressing Sense. ${remaining.join(' and ')}. ${closer}`;
+        } else {
+            const remaining = selectedPhrases.slice(2);
+            result = `${opener} ${selectedPhrases[0]} and ${selectedPhrases[1]}. ${remaining.join(', ')}. ${closer}`;
+        }
+    }
+
+    result = result.replace(/\s+/g, ' ').replace(/\s+\./g, '.').replace(/\.\./g, '.').trim();
+    return result;
 }
 
 function buildChips() {
@@ -93,24 +219,30 @@ function buildChips() {
             selectedTags = selectedTags.includes(tag)
                 ? selectedTags.filter(t => t !== tag)
                 : [...selectedTags, tag];
+            userEditedReview = false;
             refreshReviewText();
         });
         row.appendChild(chip);
     });
 }
 
-function refreshReviewText() {
+function refreshReviewText(forceRebuild = false) {
     const textEl = document.getElementById('review-text');
     const copyBtn = document.getElementById('copy-btn');
-    if (userEditedReview) return;
+    const shuffleBtn = document.getElementById('shuffle-btn');
+
+    if (userEditedReview && !forceRebuild) return;
+
     if (selectedTags.length === 0) {
         textEl.textContent = "Select a few words above to build your note...";
         textEl.classList.add('placeholder');
         copyBtn.disabled = true;
+        if (shuffleBtn) shuffleBtn.style.display = 'none';
     } else {
         textEl.textContent = buildSentence(selectedTags);
         textEl.classList.remove('placeholder');
         copyBtn.disabled = false;
+        if (shuffleBtn) shuffleBtn.style.display = 'inline-block';
     }
 }
 
@@ -122,6 +254,14 @@ function initReviewBuilder() {
 
     const textEl = document.getElementById('review-text');
     const copyBtn = document.getElementById('copy-btn');
+    const shuffleBtn = document.getElementById('shuffle-btn');
+
+    if (shuffleBtn) {
+        shuffleBtn.onclick = () => {
+            userEditedReview = false;
+            refreshReviewText(true);
+        };
+    }
 
     textEl.oninput = () => {
         userEditedReview = true;
@@ -140,7 +280,6 @@ function initReviewBuilder() {
                 copyBtn.classList.remove('copied');
             }, 2000);
 
-            // show the paste-reminder toast
             const toast = document.getElementById('toast');
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 4000);
@@ -151,9 +290,6 @@ function initReviewBuilder() {
 }
 
 // ===== Screen 3: low rating -> dummy submit -> thank you =====
-// NOTE: this is a dummy submit — nothing is actually sent anywhere yet.
-// Swap the inside of submitBtn.onclick later for a real backend call
-// (Google Form, email API, database, etc.) so feedback isn't lost.
 function initFeedbackForm(stars) {
     const nameInput = document.getElementById('fb-name');
     const phoneInput = document.getElementById('fb-phone');
@@ -161,7 +297,6 @@ function initFeedbackForm(stars) {
     const submitBtn = document.getElementById('feedback-submit-btn');
 
     submitBtn.onclick = () => {
-        // dummy collection point — values are read here but not sent anywhere yet
         const feedbackData = {
             stars: stars,
             name: nameInput.value,
