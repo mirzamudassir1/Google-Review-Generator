@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dressing Sense - Tell us how it went</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --ink: #2A211B;
+            --cream: #F5EFE4;
+            --charcoal: #221D19;
+            --gold: #B8892B;
+            --thread: #A5432E;
+            --tape-line: #D8C9A8;
+            --ok-green: #4C6B4F;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--charcoal);
+            color: var(--cream);
+            font-family: 'Work Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 24px 16px 40px;
+            line-height: 1.5;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 480px;
+            background: var(--cream);
+            color: var(--ink);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .header {
+            background: var(--charcoal);
+            color: var(--cream);
+            padding: 34px 28px 26px;
+            text-align: center;
+            position: relative;
+        }
+
+        .brand-eyebrow {
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .brand-name {
+            font-family: 'Fraunces', serif;
+            font-weight: 700;
+            font-size: 34px;
+            letter-spacing: 0.01em;
+        }
+
+        .brand-sub {
+            font-size: 12px;
+            color: #C9BEA9;
+            margin-top: 6px;
+            letter-spacing: 0.03em;
+        }
+
+        .tape {
+            height: 14px;
+            background: repeating-linear-gradient(90deg,
+                    var(--tape-line) 0px, var(--tape-line) 1px,
+                    var(--cream) 1px, var(--cream) 10px);
+            position: relative;
+        }
+
+        .body-pad {
+            padding: 30px 28px 34px;
+        }
+
+        .prompt {
+            font-family: 'Fraunces', serif;
+            font-size: 22px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .prompt-sub {
+            text-align: center;
+            font-size: 13.5px;
+            color: #6B5D4F;
+            margin-bottom: 26px;
+        }
+
+        .rating-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .star-btn {
+            flex: 1;
+            background: #fff;
+            border: 1.5px solid #D8C9A8;
+            border-radius: 3px;
+            padding: 14px 4px 10px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: border-color 0.15s, transform 0.1s, background 0.15s;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .star-btn:hover {
+            border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .star-btn:active {
+            transform: translateY(0);
+        }
+
+        .star-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .star-btn .num {
+            font-size: 11px;
+            color: #8A7A65;
+            font-weight: 500;
+        }
+
+        .tickmarks {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 2px;
+            margin-bottom: 28px;
+        }
+
+        .tickmarks span {
+            font-size: 10px;
+            color: #B0A28C;
+            letter-spacing: 0.03em;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fade 0.25s ease;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-link {
+            display: inline-block;
+            font-size: 12.5px;
+            color: #8A7A65;
+            text-decoration: none;
+            margin-bottom: 18px;
+            cursor: pointer;
+        }
+
+        .back-link:hover {
+            color: var(--ink);
+        }
+
+        .good-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--ok-green);
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .good-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--ok-green);
+        }
+
+        .chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .chip {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 9px 14px;
+            border: 1.5px solid #D8C9A8;
+            border-radius: 20px;
+            background: #fff;
+            color: var(--ink);
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
+        }
+
+        .chip:active {
+            transform: scale(0.97);
+        }
+
+        .chip.selected {
+            background: var(--ink);
+            color: #fff;
+            border-color: var(--ink);
+        }
+
+        .chip.selected::after {
+            content: " ✓";
+        }
+
+        .review-option {
+            border: 1.5px solid #E4D9C1;
+            border-radius: 4px;
+            padding: 16px 16px 14px;
+            margin-bottom: 14px;
+            background: #fff;
+        }
+
+        .review-option-label {
+            font-size: 10.5px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #8A7A65;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .review-text {
+            font-size: 14px;
+            color: #3A2E22;
+            margin-bottom: 12px;
+            outline: none;
+            min-height: 60px;
+            line-height: 1.45;
+        }
+
+        .review-text.placeholder {
+            color: #A79A85;
+            font-style: italic;
+        }
+
+        .copy-btn {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 12.5px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            background: transparent;
+            border: 1.3px solid var(--ink);
+            color: var(--ink);
+            padding: 7px 14px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .copy-btn:hover {
+            background: var(--ink);
+            color: #fff;
+        }
+
+        .copy-btn.copied {
+            background: var(--ok-green);
+            border-color: var(--ok-green);
+            color: #fff;
+        }
+
+        .copy-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .divider-line {
+            border: none;
+            border-top: 1px dashed #D8C9A8;
+            margin: 24px 0 20px;
+        }
+
+        .pre-post-note {
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            font-size: 19px;
+            color: var(--ink);
+            text-align: left;
+            margin-bottom: 14px;
+        }
+
+        .post-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            font-size: 16.5px;
+            background: var(--thread);
+            color: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            letter-spacing: 0.01em;
+            transition: background 0.15s;
+        }
+
+        .post-btn:hover {
+            background: #8A3423;
+        }
+
+        .post-hint {
+            font-size: 11.5px;
+            color: #8A7A65;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .feedback-input-field {
+            width: 100%;
+            border: 1.5px solid #D8C9A8;
+            border-radius: 4px;
+            padding: 12px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 14px;
+            color: var(--ink);
+            margin-bottom: 12px;
+        }
+
+        .feedback-input-field:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .feedback-textarea {
+            width: 100%;
+            min-height: 110px;
+            border: 1.5px solid #D8C9A8;
+            border-radius: 4px;
+            padding: 12px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 14px;
+            color: var(--ink);
+            resize: vertical;
+            margin-bottom: 16px;
+        }
+
+        .feedback-textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .send-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            background: var(--ink);
+            color: #fff;
+            padding: 14px;
+            border-radius: 4px;
+            transition: background 0.15s;
+        }
+
+        .send-btn:hover {
+            background: #453A2F;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--ink);
+            color: #fff;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 13px;
+            padding: 12px 20px;
+            border-radius: 6px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            max-width: 85%;
+            text-align: center;
+            z-index: 999;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .footer-mark {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px dashed #D8C9A8;
+            font-size: 11px;
+            color: #8A7A65;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ig-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 16px;
+            background: linear-gradient(135deg, #4f5bd5, #962fbf 30%, #d62976 55%, #fa7e1e 75%, #feda75);
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 12.5px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: none;
+            border-radius: 999px;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .ig-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(214, 41, 118, 0.35);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="header">
+            <div class="brand-eyebrow">Swapnalok Complex &middot; Secunderabad</div>
+            <div class="brand-name">Dressing Sense</div>
+            <div class="brand-sub">Shop No. 30/31 &middot; Thank you for visiting</div>
+        </div>
+
+        <div class="tape"></div>
+
+        <div class="body-pad">
+            <!-- SCREEN 1: Rating -->
+            <div class="screen active" id="screen-rating">
+                <div class="prompt">How was your visit today?</div>
+                <div class="prompt-sub">Tap a rating to continue</div>
+
+                <div class="rating-row" id="rating-row"></div>
+
+                <div class="tickmarks">
+                    <span>Not great</span>
+                    <span>Loved it</span>
+                </div>
+            </div>
+
+            <!-- SCREEN 2: High Rating (4-5 Stars) -->
+            <div class="screen" id="screen-high">
+                <a class="back-link" onclick="goTo('screen-rating')">&larr; back</a>
+                <div class="good-badge"><span class="dot"></span> Glad you enjoyed it!</div>
+                <div class="prompt" style="text-align:left; font-size:19px;">What stood out? Tap a few</div>
+                <div class="prompt-sub" style="text-align:left; margin-bottom:16px;">We'll turn your picks into a note
+                    &middot; tap the text below to edit it.</div>
+
+                <div class="chip-row" id="chip-row"></div>
+
+                <div class="review-option">
+                    <div class="review-option-label">
+                        <span>Your review</span>
+                        <span>tap to edit</span>
+                    </div>
+                    <div class="review-text placeholder" id="review-text" contenteditable="true">Select a few words
+                        above to build your note...</div>
+                    <button class="copy-btn" id="copy-btn" disabled>Copy this note</button>
+                </div>
+
+                <hr class="divider-line">
+
+                <div class="pre-post-note">Please copy the review, and paste it on the next screen.</div>
+                <a class="post-btn" id="google-post-btn" href="#" target="_blank" rel="noopener">Post my review on
+                    Google</a>
+                <div class="post-hint">This opens Google's review page in a new tab. Paste your note there and submit it
+                    yourself.</div>
+            </div>
+
+            <!-- SCREEN 3: Low Rating (1-3 Stars) -->
+            <div class="screen" id="screen-low">
+                <a class="back-link" onclick="goTo('screen-rating')">&larr; back</a>
+                <div class="prompt" style="text-align:left; font-size:19px;">Sorry to hear that &middot; tell us
+                    directly</div>
+                <div class="prompt-sub" style="text-align:left; margin-bottom:18px;">We'd rather make it right than have
+                    you leave unhappy.</div>
+
+                <input class="feedback-input-field" id="fb-name" type="text" placeholder="Your name">
+                <input class="feedback-input-field" id="fb-phone" type="tel" placeholder="Phone number (optional)">
+                <textarea class="feedback-textarea" id="feedback-input"
+                    placeholder="What went wrong? (fit, sizing, staff, price, anything else)"></textarea>
+
+                <button class="send-btn" id="feedback-submit-btn">Submit feedback</button>
+            </div>
+
+            <!-- SCREEN 4: Thank You Screen -->
+            <div class="screen" id="screen-thankyou">
+                <div class="prompt" style="font-size:20px; text-align:center;">Thank you!</div>
+                <div class="prompt-sub" style="margin-bottom:0; text-align:center;">We've noted your feedback and will
+                    personally look into it. We appreciate you taking the time to tell us.</div>
+            </div>
+
+            <div class="footer-mark">
+                <span>Dressing Sense &middot; Secunderabad</span>
+                <a href="https://www.instagram.com/dressingsense0?igsh=Z3VlcGdncmoyY2x4" target="_blank" rel="noopener"
+                    class="ig-button">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" stroke-width="1.8" />
+                        <circle cx="12" cy="12" r="4.3" stroke="currentColor" stroke-width="1.8" />
+                        <circle cx="17.3" cy="6.7" r="1.15" fill="currentColor" />
+                    </svg>
+                    Follow us on Instagram
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Copied! Now tap "Post my review on Google" and paste it in the review box.</div>
+
+    <script>
+        // ===== CONFIG =====
+        const PLACE_ID = "ChIJ_wvuvBCayzsRfo-Z2VY0UMQ";
+        const GOOGLE_REVIEW_URL = "https://search.google.com/local/writereview?placeid=" + PLACE_ID;
+
+        // ===== Chip tags + phrase variants =====
+        const chipTags = [
+            { tag: "quality", label: "Quality fabric" },
+            { tag: "variety", label: "Wide variety" },
+            { tag: "pricing", label: "Fair pricing" },
+            { tag: "staff", label: "Helpful staff" },
+            { tag: "fitting", label: "Great fitting advice" },
+            { tag: "ambience", label: "Well organised store" },
+            { tag: "return", label: "Coming back again" }
+        ];
+
+        const phrases = {
+            quality: ["the fabric quality is genuinely excellent", "the material quality really stood out", "everything is made from solid, good quality fabric"],
+            variety: ["they have a wide variety to choose from", "the range of options on display is great", "so many styles to pick from"],
+            pricing: ["the pricing is fair for the quality", "prices are quite reasonable", "good value for what you're paying"],
+            staff: ["the staff were really helpful throughout", "the team was friendly and patient with all my questions", "staff went out of their way to help me pick"],
+            fitting: ["they gave great advice on fitting", "the fitting suggestions were spot on", "staff helped me find exactly the right size"],
+            ambience: ["the store is well organised and easy to browse", "everything was neatly arranged", "clean, well laid out store"],
+            return: ["I'll definitely be coming back", "will be shopping here again for sure", "already planning my next visit"]
+        };
+
+        const openers = [
+            "Visited Dressing Sense in Swapnalok Complex —",
+            "Shopped at Dressing Sense, Swapnalok Complex —",
+            "Went to Dressing Sense at Swapnalok Complex and",
+            "Stopped by Dressing Sense in Swapnalok Complex —"
+        ];
+        const closers = ["Highly recommend.", "Would definitely recommend it.", "Worth a visit.", "Really happy with the experience."];
+
+        function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+        let selectedTags = [];
+        let userEditedReview = false;
+
+        // ===== Star rating setup =====
+        const starLabels = ["1", "2", "3", "4", "5"];
+        const starRow = document.getElementById('rating-row');
+
+        starLabels.forEach((n) => {
+            const btn = document.createElement('button');
+            btn.className = 'star-btn';
+            btn.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2.5l2.9 6.26 6.6.63-5 4.65 1.5 6.96L12 17.9 6 21l1.5-6.96-5-4.65 6.6-.63L12 2.5z"
+          fill="#D8C9A8" stroke="#B8892B" stroke-width="1"/>
+      </svg>
+      <span class="num">${n}</span>
+    `;
+            btn.addEventListener('click', () => handleRating(parseInt(n)));
+            starRow.appendChild(btn);
+        });
+
+        function handleRating(n) {
+            if (n >= 4) {
+                initReviewBuilder();
+                goTo('screen-high');
+            } else {
+                initFeedbackForm(n);
+                goTo('screen-low');
+            }
+        }
+
+        // ===== Screen 2: chip-based review builder =====
+        function buildSentence(tags) {
+            if (tags.length === 0) return "";
+            const parts = tags.map(t => pick(phrases[t]));
+            const joined = parts.length === 1
+                ? parts[0]
+                : parts.length === 2
+                    ? parts[0] + " and " + parts[1]
+                    : parts.slice(0, -1).join(", ") + ", and " + parts[parts.length - 1];
+            const sentence = pick(openers) + " " + joined + ". " + pick(closers);
+            return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+        }
+
+        function buildChips() {
+            const row = document.getElementById('chip-row');
+            row.innerHTML = '';
+            chipTags.forEach(({ tag, label }) => {
+                const chip = document.createElement('button');
+                chip.className = 'chip';
+                chip.type = 'button';
+                chip.dataset.tag = tag;
+                chip.textContent = label;
+                chip.addEventListener('click', () => {
+                    chip.classList.toggle('selected');
+                    selectedTags = selectedTags.includes(tag)
+                        ? selectedTags.filter(t => t !== tag)
+                        : [...selectedTags, tag];
+                    refreshReviewText();
+                });
+                row.appendChild(chip);
+            });
+        }
+
+        function refreshReviewText() {
+            const textEl = document.getElementById('review-text');
+            const copyBtn = document.getElementById('copy-btn');
+            if (userEditedReview) return;
+            if (selectedTags.length === 0) {
+                textEl.textContent = "Select a few words above to build your note...";
+                textEl.classList.add('placeholder');
+                copyBtn.disabled = true;
+            } else {
+                textEl.textContent = buildSentence(selectedTags);
+                textEl.classList.remove('placeholder');
+                copyBtn.disabled = false;
+            }
+        }
+
+        function initReviewBuilder() {
+            selectedTags = [];
+            userEditedReview = false;
+            buildChips();
+            refreshReviewText();
+
+            const textEl = document.getElementById('review-text');
+            const copyBtn = document.getElementById('copy-btn');
+
+            textEl.oninput = () => {
+                userEditedReview = true;
+                textEl.classList.remove('placeholder');
+                copyBtn.disabled = textEl.textContent.trim().length === 0;
+            };
+
+            copyBtn.onclick = () => {
+                const text = textEl.textContent.trim();
+                if (!text) return;
+                navigator.clipboard.writeText(text).then(() => {
+                    copyBtn.textContent = 'Copied ✓';
+                    copyBtn.classList.add('copied');
+                    setTimeout(() => {
+                        copyBtn.textContent = 'Copy this note';
+                        copyBtn.classList.remove('copied');
+                    }, 2000);
+
+                    // Show toast notification
+                    const toast = document.getElementById('toast');
+                    toast.classList.add('show');
+                    setTimeout(() => toast.classList.remove('show'), 4000);
+                });
+            };
+
+            document.getElementById('google-post-btn').href = GOOGLE_REVIEW_URL;
+        }
+
+        // ===== Screen 3: Low rating dummy form =====
+        function initFeedbackForm(stars) {
+            const nameInput = document.getElementById('fb-name');
+            const phoneInput = document.getElementById('fb-phone');
+            const feedbackInput = document.getElementById('feedback-input');
+            const submitBtn = document.getElementById('feedback-submit-btn');
+
+            submitBtn.onclick = () => {
+                nameInput.value = '';
+                phoneInput.value = '';
+                feedbackInput.value = '';
+                goTo('screen-thankyou');
+            };
+        }
+
+        // ===== Navigation Helper =====
+        function goTo(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+
+</html>
