@@ -58,7 +58,7 @@ Google-Review-Generator/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/Google-Review-Generator.git
+git clone https://github.com/mirzamudassir1/Google-Review-Generator.git
 ```
 
 ### 2. Open the project
